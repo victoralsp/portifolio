@@ -4,6 +4,12 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { FluidSimulation } from './FluidSimulation'
 
+// Set raw sRGB floats directly to bypass Three.js linear color management
+const inkColor = new THREE.Color()
+inkColor.r = 242 / 255
+inkColor.g = 242 / 255
+inkColor.b = 255 / 255
+
 const config = {
   simResolution: 256,
   dyeResolution: 1024,
@@ -16,7 +22,7 @@ const config = {
   pressureDecay: 0.75,
   threshold: 1.0,
   edgeSoftness: 0.0,
-  inkColor: new THREE.Color(0xe8e8f0),
+  inkColor,
 }
 
 export function FluidCanvas() {
