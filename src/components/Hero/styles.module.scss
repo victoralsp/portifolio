@@ -23,9 +23,11 @@
   opacity: 0.45;
   max-width: 220px;
   text-align: right;
+  pointer-events: none;
 }
 
 .lines {
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   width: 100%;
