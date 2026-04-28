@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --app --no-tailwind --import-alias \"@/*\" --no-eslint --no-src-dir)"
+    ]
+  }
+}
