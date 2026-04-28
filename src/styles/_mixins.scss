@@ -1,0 +1,94 @@
+// ── Breakpoints ──────────────────────────────────────────────
+$breakpoints: (
+  'sm':  576px,
+  'md':  768px,
+  'lg':  1024px,
+  'xl':  1280px,
+  '2xl': 1536px,
+);
+
+@mixin respond-to($bp) {
+  @if map-has-key($breakpoints, $bp) {
+    @media (min-width: #{map-get($breakpoints, $bp)}) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-below($bp) {
+  @if map-has-key($breakpoints, $bp) {
+    @media (max-width: calc(#{map-get($breakpoints, $bp)} - 1px)) {
+      @content;
+    }
+  }
+}
+
+// ── Layout ───────────────────────────────────────────────────
+@mixin container {
+  width: 100%;
+  max-width: $container-max;
+  margin-inline: auto;
+  padding-inline: $space-6;
+
+  @include respond-to('lg') {
+    padding-inline: $space-12;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ── Typography ───────────────────────────────────────────────
+@mixin heading-gradient {
+  background: linear-gradient(135deg, $color-text 0%, $color-primary 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Visual effects ───────────────────────────────────────────
+@mixin glass-card {
+  background: rgba($color-surface, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+}
+
+@mixin glow-on-hover($color: $color-primary) {
+  transition: box-shadow $transition-normal;
+
+  &:hover {
+    box-shadow: 0 0 20px rgba($color, 0.4);
+  }
+}
+
+// ── Accessibility ────────────────────────────────────────────
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 3px;
+  }
+}
+
+// ── Reduced motion ───────────────────────────────────────────
+@mixin no-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
