@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ClientLayout } from '@/components/ClientLayout'
 import './globals.scss'
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body>
-        <p>teste</p>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   )

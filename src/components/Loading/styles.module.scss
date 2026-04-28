@@ -1,0 +1,147 @@
+// Wrapper fixo que agrupa SVG + letras para o scroll zoom
+.group {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.vSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.vPath {
+  fill: none;
+  stroke: #f0ece4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(240, 236, 228, 0.28));
+}
+
+// Loader (barra + contador)
+.loader {
+  position: fixed;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 10;
+}
+
+.barTrack {
+  height: 1px;
+  background: #222;
+  position: relative;
+}
+
+.barFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #f0ece4;
+  width: 0%;
+  box-shadow: 0 0 8px rgba(240, 236, 228, 0.5);
+}
+
+.pct {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(9px, 1.1vmin, 11px);
+  letter-spacing: 0.4em;
+  color: rgba(240, 236, 228, 0.3);
+}
+
+// Letras ICTOR (criadas dinamicamente e appendadas ao .group)
+.lt {
+  position: absolute;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  color: #f0ece4;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+// Scroll hint
+.scrollHint {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mouse {
+  width: 24px;
+  height: 38px;
+  border: 1.5px solid rgba(240, 236, 228, 0.4);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.mouseWheel {
+  width: 3px;
+  height: 7px;
+  background: rgba(240, 236, 228, 0.7);
+  border-radius: 2px;
+  animation: wheel 1.6s ease-in-out infinite;
+}
+
+@keyframes wheel {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  60%       { opacity: 0; transform: translateY(9px); }
+}
+
+.scrollLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: rgba(240, 236, 228, 0.3);
+  text-transform: uppercase;
+}
+
+// Tela de transição para o portfólio
+.nextSection {
+  position: fixed;
+  inset: -20px;
+  background: #f0ece4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 8vw, 120px);
+    color: #080808;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &.visible h2 {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Espaço de scroll para o zoom (350vh de trilho)
+.scrollSpace {
+  height: 350vh;
+}
