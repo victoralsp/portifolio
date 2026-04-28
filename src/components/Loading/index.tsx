@@ -40,6 +40,9 @@ export function Loading({ onComplete }: LoadingProps) {
       const vPath = pathRef.current
       if (!vSvg || !vPath || !groupRef.current) return
 
+      // Block scroll during loading
+      document.body.style.overflow = 'hidden'
+
       // Lenis smooth scroll
       lenis = new Lenis({
         duration: 1.4,
@@ -47,6 +50,7 @@ export function Loading({ onComplete }: LoadingProps) {
         smoothWheel: true,
         wheelMultiplier: 2,
       })
+      lenis.stop()
       lenis.on('scroll', () => ScrollTrigger.update())
       rafTicker = (time: number) => lenis?.raf(time * 1000)
       gsap.ticker.add(rafTicker)
@@ -168,6 +172,9 @@ export function Loading({ onComplete }: LoadingProps) {
 
       // Phase 4: scroll zoom centered on T
       const initScrollZoom = () => {
+        document.body.style.overflow = ''
+        lenis?.start()
+
         const nextSection = nextSectionRef.current!
         const tEl         = letterEls[2]
         const tRect       = tEl.getBoundingClientRect()
@@ -304,6 +311,7 @@ export function Loading({ onComplete }: LoadingProps) {
       lenis?.destroy()
       ScrollTrigger.getAll().forEach(t => t.kill())
       gsap.killTweensOf('*')
+      document.body.style.overflow = ''
       document.body.style.background = ''
       createdEls.forEach(el => el.remove())
     }
