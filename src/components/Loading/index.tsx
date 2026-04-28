@@ -9,10 +9,11 @@ import styles from './styles.module.scss'
 gsap.registerPlugin(ScrollTrigger)
 
 interface LoadingProps {
-  onComplete: () => void
+  onEnter: () => void
+  onLeave: () => void
 }
 
-export function Loading({ onComplete }: LoadingProps) {
+export function Loading({ onEnter, onLeave }: LoadingProps) {
   const groupRef       = useRef<HTMLDivElement>(null)
   const svgRef         = useRef<SVGSVGElement>(null)
   const pathRef        = useRef<SVGPathElement>(null)
@@ -22,16 +23,17 @@ export function Loading({ onComplete }: LoadingProps) {
   const pctRef         = useRef<HTMLDivElement>(null)
   const scrollHintRef  = useRef<HTMLDivElement>(null)
   const scrollSpaceRef = useRef<HTMLDivElement>(null)
-  const nextSectionRef = useRef<HTMLDivElement>(null)
-  const onCompleteRef  = useRef(onComplete)
+  const onEnterRef     = useRef(onEnter)
+  const onLeaveRef     = useRef(onLeave)
 
-  useEffect(() => { onCompleteRef.current = onComplete })
+  useEffect(() => { onEnterRef.current = onEnter })
+  useEffect(() => { onLeaveRef.current = onLeave })
 
   useEffect(() => {
     let lenis: Lenis | null = null
     let rafTicker: ((time: number) => void) | null = null
     const createdEls: HTMLElement[] = []
-    let completed = false
+    let didEnter = false
 
     document.fonts.load('700 200px "Barlow Condensed"').then(init)
 
@@ -98,13 +100,13 @@ export function Loading({ onComplete }: LoadingProps) {
       const DX = [1, 1, 0, -1, -1, -1, 0, 1]
       const DY = [0, 1, 1, 1,  0, -1, -1, -1]
       const contour: [number, number][] = []
-      let bx = sx, by = sy, entered = 3, steps = 0
+      let bx = sx, by = sy, dir = 3, steps = 0
       do {
         contour.push([bx, by])
         for (let i = 0; i < 8; i++) {
-          const nd = (entered + 1 + i) % 8
+          const nd = (dir + 1 + i) % 8
           const nx = bx + DX[nd], ny = by + DY[nd]
-          if (isOn(nx, ny)) { entered = (nd + 4) % 8; bx = nx; by = ny; break }
+          if (isOn(nx, ny)) { dir = (nd + 4) % 8; bx = nx; by = ny; break }
         }
         steps++
       } while ((bx !== sx || by !== sy) && steps < CV * CV)
@@ -170,16 +172,15 @@ export function Loading({ onComplete }: LoadingProps) {
 
       let letterEls: HTMLElement[] = []
 
-      // Phase 4: scroll zoom centered on T
+      // Phase 4: scroll zoom centered on T — bidirectional
       const initScrollZoom = () => {
         document.body.style.overflow = ''
         lenis?.start()
 
-        const nextSection = nextSectionRef.current!
-        const tEl         = letterEls[2]
-        const tRect       = tEl.getBoundingClientRect()
-        const tCenterX    = tRect.left + tRect.width  / 2
-        const tCenterY    = tRect.top  + tRect.height / 2
+        const tEl      = letterEls[2]
+        const tRect    = tEl.getBoundingClientRect()
+        const tCenterX = tRect.left + tRect.width  / 2
+        const tCenterY = tRect.top  + tRect.height / 2
 
         const group = groupRef.current!
         group.style.transformOrigin = `${tCenterX}px ${tCenterY}px`
@@ -188,29 +189,31 @@ export function Loading({ onComplete }: LoadingProps) {
         ScrollTrigger.create({
           trigger: scrollSpaceRef.current!,
           start: 'top top',
-          end:   'bottom bottom',
+          end:   'bottom top',
           onUpdate(self) {
             const p = self.progress
             const s = 1 + (maxScale - 1) * Math.pow(p, 3)
             group.style.transform = `scale(${s})`
 
-            gsap.set(scrollHintRef.current!, { opacity: Math.max(0, 1 - p * 10) })
+            // Fade out loading overlay as zoom completes
+            const fadeProgress = Math.max(0, (p - 0.9) * 10)
+            group.style.opacity = String(1 - fadeProgress)
 
-            if (p > 0.9) {
-              document.body.style.background = '$color-text'
-              gsap.set(nextSection, { opacity: (p - 0.9) * 10, zIndex: 15, pointerEvents: 'all' })
-              if (p > 0.95) nextSection.classList.add(styles.visible)
+            // Switch body bg at the start of the fade so dark never shows through
+            if (p >= 0.9) {
+              document.body.style.backgroundColor = '#e8e8f0'
             } else {
-              document.body.style.background = '$color-bg'
-              gsap.set(nextSection, { opacity: 0, zIndex: 1, pointerEvents: 'none' })
-              nextSection.classList.remove(styles.visible)
+              document.body.style.backgroundColor = '#0a0a0f'
             }
 
-            if (p >= 0.99 && !completed) {
-              completed = true
-              lenis?.stop()
-              window.scrollTo(0, 0)
-              onCompleteRef.current()
+            gsap.set(scrollHintRef.current!, { opacity: Math.max(0, 1 - p * 10) })
+
+            if (p >= 0.99 && !didEnter) {
+              didEnter = true
+              onEnterRef.current()
+            } else if (p < 0.9 && didEnter) {
+              didEnter = false
+              onLeaveRef.current()
             }
           },
         })
@@ -312,7 +315,7 @@ export function Loading({ onComplete }: LoadingProps) {
       ScrollTrigger.getAll().forEach(t => t.kill())
       gsap.killTweensOf('*')
       document.body.style.overflow = ''
-      document.body.style.background = ''
+      document.body.style.backgroundColor = ''
       createdEls.forEach(el => el.remove())
     }
   }, [])
@@ -337,10 +340,6 @@ export function Loading({ onComplete }: LoadingProps) {
           <div className={styles.mouseWheel} />
         </div>
         <span className={styles.scrollLabel}>scroll</span>
-      </div>
-
-      <div ref={nextSectionRef} className={styles.nextSection}>
-        <h2>PORTFOLIO 2026</h2>
       </div>
 
       <div ref={scrollSpaceRef} className={styles.scrollSpace} />
