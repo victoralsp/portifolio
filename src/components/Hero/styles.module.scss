@@ -1,0 +1,58 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  padding-top: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background: #e8e8f0;
+  overflow: hidden;
+}
+
+.description {
+  position: absolute;
+  top: 250px;
+  right: 5vw;
+  font-family: 'DM Mono', monospace;
+  font-size: .7em;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  color: #0a0a0f;
+  opacity: 0.45;
+  max-width: 220px;
+  text-align: right;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 5vw;
+}
+
+.line1,
+.line2,
+.line3 {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(60px, 13vw, 200px);
+  line-height: 0.85;
+  text-transform: uppercase;
+  color: #0a0a0f;
+  white-space: nowrap;
+}
+
+.line1 {
+  align-self: flex-start;
+}
+
+.line2 {
+  align-self: center;
+}
+
+.line3 {
+  align-self: flex-end;
+}
