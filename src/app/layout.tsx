@@ -3,8 +3,8 @@ import { ClientLayout } from '@/components/ClientLayout'
 import './globals.scss'
 
 export const metadata: Metadata = {
-  title: 'Victor Pinheiro — Desenvolvedor Frontend',
-  description: 'Portfólio de Victor Pinheiro',
+  title: 'Victor Alves — Desenvolvedor Frontend',
+  description: 'Portifólio',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

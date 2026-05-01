@@ -19,8 +19,7 @@
   font-size: .7em;
   line-height: 1.8;
   letter-spacing: 0.04em;
-  color: #0a0a0f;
-  opacity: 0.45;
+  color: #0a0a0f9a;
   max-width: 220px;
   text-align: right;
   pointer-events: none;
@@ -57,4 +56,17 @@
 
 .line3 {
   align-self: flex-end;
+  display: flex;
+  gap: 0.18em;
+}
+
+.mediaPlaceholder {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1.6em;
+  height: 1em;
+  border-radius: 4px;
+  object-fit: cover;
+  vertical-align: middle;
+  transform: translateY(25px);
 }

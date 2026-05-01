@@ -1,8 +1,10 @@
 .header {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 1900px;
   height: 70px;
   z-index: 100;
 
@@ -12,17 +14,16 @@
   padding: 0 5vw;
 
   background: #e8e8f0;
-  border-bottom: 1px solid rgba(10, 10, 15, 0.08);
+  // border-bottom: 1px solid rgba(10, 10, 15, 0.08);
 
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #0a0a0f;
 }
 
 .logo {
-  font-size: 13px;
+  font-size: 1em;
   letter-spacing: 0.22em;
   font-weight: 400;
   user-select: none;
@@ -35,32 +36,53 @@
 }
 
 .navLink {
-  color: inherit;
+  color: #0a0a0fc7;
   text-decoration: none;
-  opacity: 0.55;
-  transition: opacity 150ms ease;
+  font-size: .8em;
+  transition: color .3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
 
   &:hover {
-    opacity: 1;
+    color: #0a0a0f;
+
+    .navArrow {
+      max-width: 1.4em;
+      font-size: 1.8em;
+      opacity: 1;
+      margin-right: 4px;
+      transform: translateX(0);
+    }
   }
 }
 
+.navArrow {
+  display: inline-block;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateX(-6px);
+  transition: max-width 0.25s ease, opacity 0.2s ease, margin-right 0.25s ease, transform 0.25s ease;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
 .cta {
-  color: inherit;
+  color: #0a0a0f;
+  font-size: .8em;
   text-decoration: none;
-  opacity: 0.55;
-  transition: opacity 150ms ease;
 
   span {
     display: inline-block;
     transition: transform 150ms ease;
+    transform: translateY(-1px);
   }
 
   &:hover {
-    opacity: 1;
-
     span {
-      transform: translateX(4px);
+      transform: translateX(4px) translateY(-1px);
     }
   }
 }

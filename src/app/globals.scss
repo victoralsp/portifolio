@@ -2,6 +2,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Mono:wght@300&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
+// Container global
+body {
+  max-width: 1900px;
+  margin: 0 auto;
+}
+
 // Lenis smooth scroll
 html.lenis,
 html.lenis body { height: auto; }
