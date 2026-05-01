@@ -13,13 +13,12 @@ export function Hero() {
   const line2Ref     = useRef<HTMLSpanElement>(null)
   const textLine3Ref = useRef<HTMLSpanElement>(null)
   const imgRef       = useRef<HTMLImageElement>(null)
-  const hasAnimated  = useRef(false)
+  const tlRef        = useRef<gsap.core.Timeline | null>(null)
+  const delayRef     = useRef<gsap.core.Tween | null>(null)
   const visible      = useHeroVisible()
 
+  // Cria splits e timeline uma única vez
   useEffect(() => {
-    if (!visible || hasAnimated.current) return
-    hasAnimated.current = true
-
     const l1  = line1Ref.current
     const l2  = line2Ref.current
     const l3  = textLine3Ref.current
@@ -30,25 +29,46 @@ export function Hero() {
     const split2 = SplitText.create(l2, { type: 'chars' })
     const split3 = SplitText.create(l3, { type: 'chars' })
 
-    gsap.timeline({ delay: 0.4 })
+    tlRef.current = gsap.timeline({ paused: true })
       .from(split1.chars, {
         yPercent: 120,
-        duration: 1,
+        duration: .8,
         ease: 'power4.out',
         stagger: 0.03,
       })
       .from(split2.chars, {
         yPercent: 120,
-        duration: 1,
+        duration: .8,
         ease: 'power4.out',
         stagger: 0.03,
       }, '-=0.75')
       .from([img, ...split3.chars], {
         yPercent: 120,
-        duration: 1,
+        duration: .8,
         ease: 'power4.out',
         stagger: 0.03,
       }, '-=0.75')
+
+    return () => {
+      delayRef.current?.kill()
+      tlRef.current?.kill()
+      split1.revert()
+      split2.revert()
+      split3.revert()
+    }
+  }, [])
+
+  // Play / reverse conforme visibilidade
+  useEffect(() => {
+    const tl = tlRef.current
+    if (!tl) return
+
+    if (visible) {
+      delayRef.current = gsap.delayedCall(0.4, () => tl.play())
+    } else {
+      delayRef.current?.kill()
+      tl.reverse()
+    }
   }, [visible])
 
   return (
