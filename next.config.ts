@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['192.168.15.55'],
   sassOptions: {
     includePaths: [path.join(process.cwd(), "src/styles")],
     additionalData: (content: string, loaderContext: { resourcePath: string }) => {
