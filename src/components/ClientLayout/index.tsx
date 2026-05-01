@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Loading } from '@/components/Loading'
+import { HeroVisibleContext } from '@/contexts/HeroContext'
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [heroVisible, setHeroVisible] = useState(false)
@@ -11,7 +12,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }, [heroVisible])
 
   return (
-    <>
+    <HeroVisibleContext.Provider value={heroVisible}>
       <Loading
         onEnter={() => setHeroVisible(true)}
         onLeave={() => setHeroVisible(false)}
@@ -23,6 +24,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       }}>
         {children}
       </div>
-    </>
+    </HeroVisibleContext.Provider>
   )
 }

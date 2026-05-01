@@ -33,6 +33,17 @@
   padding: 0 5vw;
 }
 
+.lineWrapper {
+  overflow: hidden;
+  width: fit-content;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.lineWrapper1 { align-self: flex-start; }
+.lineWrapper2 { align-self: center; }
+.lineWrapper3 { align-self: flex-end; }
+
 .line1,
 .line2,
 .line3 {
@@ -46,16 +57,7 @@
   white-space: nowrap;
 }
 
-.line1 {
-  align-self: flex-start;
-}
-
-.line2 {
-  align-self: center;
-}
-
 .line3 {
-  align-self: flex-end;
   display: flex;
   gap: 0.18em;
 }
