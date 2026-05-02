@@ -42,7 +42,11 @@
 
 .lineWrapper1 { align-self: flex-start; }
 .lineWrapper2 { align-self: center; }
-.lineWrapper3 { align-self: flex-end; }
+.lineWrapper3 { 
+  display: flex;
+  align-self: flex-end; 
+  gap: .8em;
+}
 
 .line1,
 .line2,
@@ -50,7 +54,7 @@
   display: block;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: clamp(60px, 13vw, 200px);
+  font-size: clamp(35px, 11vw, 200px);
   line-height: 0.85;
   text-transform: uppercase;
   color: #0a0a0f;
@@ -63,12 +67,41 @@
 }
 
 .mediaPlaceholder {
-  display: inline-block;
-  flex-shrink: 0;
-  width: 1.6em;
-  height: 1em;
-  border-radius: 4px;
   object-fit: cover;
   vertical-align: middle;
-  transform: translateY(25px);
+  border-radius: 4px;
+  flex-shrink: 0;
+  width: auto;
+  height: calc(clamp(60px, 9vw, 170px) / 1.17647);
+  margin-top: 2.2%;
+  display: inline-block;
+}
+
+@media screen and (max-width: 1024px) {
+  .lineWrapper3 {
+    flex-direction: column-reverse;
+    gap: 0;
+  }
+
+  .line3 {
+    justify-content: end;
+  }
+
+  .mediaPlaceholder {
+    height: calc(clamp(160px, 9vw, 170px) / 1.17647);
+  }
+
+  .lines {
+    margin-top: 10em;
+  }
+
+  .description {
+    top: 180px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .mediaPlaceholder {
+    display: none;
+  }
 }

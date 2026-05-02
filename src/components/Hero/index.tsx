@@ -85,14 +85,14 @@ export function Hero() {
           <span ref={line2Ref} className={styles.line2}>DESENVOLVEDOR</span>
         </div>
         <div className={`${styles.lineWrapper} ${styles.lineWrapper3}`}>
-          <span className={styles.line3}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={imgRef}
               src="https://4kwallpapers.com/images/wallpapers/spider-man-dark-artwork-2560x1440-1894.jpg"
               alt="Imagem do Victor"
               className={styles.mediaPlaceholder}
             />
+          <span className={styles.line3}>
             <span ref={textLine3Ref}>FRONT-END</span>
           </span>
         </div>
